@@ -1,0 +1,43 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<form onSubmit="return handleClick()">
+    {% for recipe in recipes %}
+        <input type="checkbox" value="{{ recipe.id }}">{{ recipe.title }}</input>
+        <button value="{{ recipe.id }}" type="button" onclick="return deleteRecipe(this)">X</button>
+    {% endfor %}
+    <input type="submit" value="Make grocery list">
+</form>
+
+<script type="text/javascript">
+    function post(path, params, method) {
+        method = method || "post"; 
+
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function handleClick() {
+        var recipe_ids = [];
+         $('input:checked').each(function() {
+             recipe_ids.push($(this).val());
+         });
+        console.log(recipe_ids);
+        post("/groceries/list/", recipe_ids);
+        return false;
+    } 
+    function deleteRecipe(button) {
+        post("/recipes/delete/" + button.value + "/")
+    }
+</script>

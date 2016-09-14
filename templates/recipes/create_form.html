@@ -1,0 +1,6 @@
+<form id="recipe_form" action="{% url 'create' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ recipe_form.as_p }}
+    <textarea name="ingredients" form="recipe_form"></textarea>
+    <input type="submit" value="Submit" />
+</form>

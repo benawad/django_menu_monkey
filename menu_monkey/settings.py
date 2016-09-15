@@ -102,4 +102,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.getcwd() + '/image_recipe/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'image_recipe')
+MEDIA_URL = '/image_recipe/'

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,7 @@ from .forms import RecipeForm
 
 
 def index(request):
-    return render(request, 'recipes/list.html', {'recipes': get_list_or_404(Recipe), 'recipe_form': RecipeForm()})
+    return render(request, 'recipes/list.html', {'recipes': Recipe.objects.all(), 'recipe_form': RecipeForm()})
 
 
 @login_required
@@ -39,10 +39,13 @@ def createRecipe(request):
 @csrf_exempt
 def delete_view(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    print(request.user)
-    print(recipe.owner)
     if request.user == recipe.owner:
         recipe.delete()
         return HttpResponseRedirect(reverse('index'))
     else:
         return HttpResponse('Unauthorized', status=401)
+
+
+def show_view(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    return render(request, 'recipes/show.html', {'recipe': recipe, 'ingredients': recipe.ingredient_set.all()})

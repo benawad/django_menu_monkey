@@ -1,17 +1,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
+<h1>Recipes</h1>
+
 <div class="row">
     {% for recipe in recipes %}
       <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
                 {% if recipe.picture %}      
-                <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }} thumbnail">
+                    <a href="{% url 'show' recipe.id %}">
+                    <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }} thumbnail">
+                    </a>
                 {% endif %}
                 <div class="caption">
-                    <h3>{{ recipe.title }}</h3>
-                    <p>{{ recipe.instructions }}</p>
+                    <a href="{% url 'show' recipe.id %}">
+                        <h3>{{ recipe.title }}</h3>
+                    </a>
+                    <p>{{ recipe.instructions | truncatewords:50 }}</p>
                     <p>
-                        <a onclick="groceryPost({{ recipe.id }})" class="btn btn-primary" role="button">Add to cart</a>
+                        <a onclick="addRecipeToGroceryCart({{ recipe.id }})" class="btn btn-primary" role="button">Add to cart</a>
                         <a onclick="deleteRecipe({{ recipe.id }})" class="btn btn-default" role="button">Delete</a>
                     </p>
                 </div>
@@ -40,13 +46,11 @@
         document.body.appendChild(form);
         form.submit();
     }
-    function groceryPost(id) {
-        var recipe_ids = [id];
-         /*$('input:checked').each(function() {
-             recipe_ids.push($(this).val());
-         });*/
-        console.log(recipe_ids);
-        post("/groceries/list/", recipe_ids);
+    function addRecipeToGroceryCart(id) {
+        $.ajax({
+          type: "POST",
+          url: "/groceries/add/" + id + "/",
+        });
     } 
     function deleteRecipe(id) {
         post("/recipes/delete/" + id + "/")

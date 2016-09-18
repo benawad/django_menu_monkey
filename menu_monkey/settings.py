@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'groceries.apps.GroceriesConfig',
     'recipes.apps.RecipesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -104,3 +105,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'image_recipe')
 MEDIA_URL = '/image_recipe/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

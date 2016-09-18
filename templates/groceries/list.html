@@ -4,7 +4,24 @@
 
     <ul>
         {% for i in ingredients %}
-            <li>{{ i.name }}</li>
+            <li>
+                {{ i.name }}
+                <a href="">
+                    <span onclick="addRecipeToGroceryCart({{ i.id }})" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </li>
         {% endfor %}
     </ul>
+    <script>
+        function addRecipeToGroceryCart(id) {
+            $.ajax({
+              type: "POST",
+              url: "/groceries/remove/ingredient/" + id + "/",
+              success: function() {
+                 location.reload(); 
+              }
+            });
+        } 
+    </script>
+
 {% endblock %}

@@ -17,4 +17,4 @@ class Ingredient(models.Model):
     recipes = models.ManyToManyField(Recipe)
 
     def __str__(self):
-        return str(self.name)
+        return self.name

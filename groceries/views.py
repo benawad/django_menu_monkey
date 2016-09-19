@@ -12,8 +12,23 @@ from .models import GroceryList
 @login_required
 def list_view(request):
     gl = get_object_or_404(GroceryList, owner=request.user, primary=True)
+    all_ingredients = gl.ingredients.all()
+    all_ingredients = sorted(all_ingredients, key=lambda x: x.name)
+    ingredients = []
+    if len(all_ingredients) > 0:
+        last = all_ingredients[0]
+        ingredients.append(last)
+        last = last.name.lower().replace(' ', '')
+        for i in all_ingredients[1:]:
+            si = i.name.lower().replace(' ', '')
+            if si != last:
+                ingredients.append(i)
+            else:
+                gl.ingredients.remove(i)
+            last = si
 
-    return render(request, 'groceries/list.html', {'ingredients': gl.ingredients.all()})
+
+    return render(request, 'groceries/list.html', {'ingredients': ingredients})
 
 
 @login_required

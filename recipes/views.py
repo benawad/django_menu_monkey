@@ -26,9 +26,14 @@ def createRecipe(request):
             ingredients = request.POST['ingredients'].strip()
             if ingredients != "":
                 for i in ingredients.split("\n"):
-                    ing = Ingredient(name=i.strip())
-                    ing.save()
-                    ing.recipes.add(recipe)
+                    i = i.strip()
+                    same_name = Ingredient.objects.filter(name__iexact=i)
+                    if same_name.exists():
+                        same_name[0].recipes.add(recipe)
+                    else:
+                        ing = Ingredient(name=i.strip())
+                        ing.save()
+                        ing.recipes.add(recipe)
             return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'recipes/create.html', {'recipe_form': recipe_form})

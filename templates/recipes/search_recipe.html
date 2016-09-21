@@ -1,0 +1,28 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for recipe...">
+          <span class="input-group-btn">
+            <button onclick="search_recipe()" class="btn btn-default" type="button">Go!</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <br>
+    <script type="text/javascript">
+        function search_recipe(){
+            query = $("input[class=form-control]").val();
+            var url = window.location.href;    
+            if (url.indexOf('?') > -1){
+               url += '&q=' + query
+            }else{
+               url += '?q=' + query
+            }
+            window.location.href = url;
+        }
+    </script>
+    {% include "recipes/recipe.html" %}
+{% endblock %}

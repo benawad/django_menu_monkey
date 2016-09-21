@@ -17,6 +17,9 @@
           <li class="{% if request.path == '/recipes/' %}active{% endif %}">
               <a href="{% url 'index' %}">Recipes</a>
           </li>
+          <li class="{% if '/recipes/search/recipes/' in request.path %}active{% endif %}">
+              <a href="{% url 'search_recipe' %}">Recipe Search</a>
+          </li>
             {% if request.user.is_authenticated %}
               <li class="{% if request.path == '/groceries/list/' %}active{% endif %}">
                   <a href="{% url 'list' %}">Grocery List</a>

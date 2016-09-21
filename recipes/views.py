@@ -13,6 +13,12 @@ def index(request):
     return render(request, 'recipes/list.html', {'recipes': Recipe.objects.all(), 'recipe_form': RecipeForm()})
 
 
+def search_recipe_view(request):
+    if request.method == 'GET':
+        query = request.GET.get('q', '')
+        return render(request, 'recipes/search_recipe.html', {'recipes': Recipe.objects.filter(title__icontains=query)})
+
+
 @login_required
 def createRecipe(request):
     if request.method == 'GET':

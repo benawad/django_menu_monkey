@@ -1,2 +1,3 @@
 django
 pillow
+dj-database-url

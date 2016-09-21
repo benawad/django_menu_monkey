@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Recipe, Ingredient
 from .forms import RecipeForm
+import json
 
 
 def index(request):
@@ -17,6 +18,20 @@ def search_recipe_view(request):
     if request.method == 'GET':
         query = request.GET.get('q', '')
         return render(request, 'recipes/search_recipe.html', {'recipes': Recipe.objects.filter(title__icontains=query)})
+
+
+def search_ingredient_view(request):
+    if request.method == 'GET':
+        query = request.GET.get('q', '[]')
+        query = json.loads(query)
+        if len(query) > 0:
+            recipes = []
+            for ing in query:
+                i = Ingredient.objects.get(name=ing)
+                recipes.extend(i.recipes.all())
+        else:
+            recipes = Recipe.objects.all()
+        return render(request, 'recipes/search_ingredient.html', {'recipes': recipes, 'ingredients': Ingredient.objects.values('name').distinct()})
 
 
 @login_required

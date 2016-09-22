@@ -11,7 +11,10 @@ from .models import GroceryList
 
 @login_required
 def list_view(request):
-    gl = get_object_or_404(GroceryList, owner=request.user, primary=True)
+    gl = GroceryList.objects.filter(owner=request.user, primary=True)
+    if len(gl) == 0:
+        gl = GroceryList(owner=request.user, primary=True)
+        gl.save()
     all_ingredients = gl.ingredients.all()
     all_ingredients = sorted(all_ingredients, key=lambda x: x.name)
     ingredients = []

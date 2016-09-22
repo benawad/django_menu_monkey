@@ -11,7 +11,9 @@ def register_view(request):
     elif request.method == 'POST':
         register_form = UserCreationForm(request.POST)
         if register_form.is_valid():
-            register_form.save()
+            user = register_form.save()
+            auth_user = authenticate(username=user.username, password=request.POST['password1'])
+            login(request, auth_user)
             return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'accounts/register.html', {'register_form': register_form})

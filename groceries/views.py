@@ -15,6 +15,8 @@ def list_view(request):
     if len(gl) == 0:
         gl = GroceryList(owner=request.user, primary=True)
         gl.save()
+    else:
+        gl = gl[0]
     all_ingredients = gl.ingredients.all()
     all_ingredients = sorted(all_ingredients, key=lambda x: x.name)
     ingredients = []

@@ -1,25 +1,28 @@
 {% extends "base/base.html" %}
 
-
 {% block content %}
-    <select style="width:100%"class="ingredient-search" multiple="multiple">
-        {% for i in ingredients %}
-            <option value="{{ i.name }}">{{ i.name }}</option>
-        {% endfor %}
-    </select>
-    <button class="isearch btn btn-default">Search</button>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for ingredient...">
+          <span class="input-group-btn">
+            <button onclick="search_ingredient()" class="btn btn-default" type="button">Go!</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <br>
     <script type="text/javascript">
-        ingredients = $(".ingredient-search").select2();
-        $(".isearch").on("click", function() {
-            query = JSON.stringify(ingredients.val());
+        function search_ingredient(){
+            query = $("input[class=form-control]").val();
             var url = window.location.href;    
             if (url.indexOf('?') > -1){
-               url += '&q=' + query;
+               url += '&q=' + query
             }else{
-               url += '?q=' + query;
+               url += '?q=' + query
             }
             window.location.href = url;
-        });
+        }
     </script>
     {% include "recipes/recipe.html" %}
 {% endblock %}

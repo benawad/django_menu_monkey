@@ -22,16 +22,13 @@ def search_recipe_view(request):
 
 def search_ingredient_view(request):
     if request.method == 'GET':
-        query = request.GET.get('q', '[]')
-        query = json.loads(query)
-        if len(query) > 0:
-            recipes = []
-            for ing in query:
-                i = Ingredient.objects.get(name=ing)
-                recipes.extend(i.recipes.all())
-        else:
-            recipes = Recipe.objects.all()
-        return render(request, 'recipes/search_ingredient.html', {'recipes': recipes, 'ingredients': Ingredient.objects.values('name').distinct()})
+        query = request.GET.get('q', '')
+        ingredients = Ingredient.objects.filter(name__icontains=query)
+        recipes = []
+        for i in ingredients:
+            recipes.extend(i.recipes.all())
+        recipes = set(recipes)
+        return render(request, 'recipes/search_ingredient.html', {'recipes': recipes})
 
 
 @login_required

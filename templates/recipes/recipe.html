@@ -1,12 +1,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
-<div class="row">
-    {% for recipe in recipes %}
+{% for i, recipe in recipes %}
+    {% if forloop.counter0|divisibleby:3 %}
+        <div class="row">
+    {% endif %}
       <div class="col-md-3">
             <div class="thumbnail">
                 {% if recipe.picture %}      
                     <a href="{% url 'show' recipe.id %}">
-                    <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }} thumbnail">
+                        <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }} thumbnail">
                     </a>
                 {% endif %}
                 <div class="caption">
@@ -21,8 +23,10 @@
                 </div>
             </div>
       </div>
-    {% endfor %}
-</div>
+    {% if forloop.last or forloop.counter|divisibleby:3 %}
+        </div>
+    {% endif %}
+{% endfor %}
 
 <script type="text/javascript">
     function post(path, params, method) {

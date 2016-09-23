@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=9999)
     picture = models.ImageField(blank=True, null=True)
     instructions = models.TextField()
     owner = models.ForeignKey(User, related_name='owner')
@@ -13,7 +13,7 @@ class Recipe(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=9999)
     recipes = models.ManyToManyField(Recipe)
 
     def __str__(self):

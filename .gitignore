@@ -1,5 +1,7 @@
 *.sqlite3
 *.pyc
-image_recipe
+image_recipe/*.jpg
+image_recipe/*.png
+image_recipe/*.jpeg
 staticfiles
 todo.txt

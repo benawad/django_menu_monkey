@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Recipe(models.Model):
     title = models.CharField(max_length=9999)
     picture = models.ImageField(blank=True, null=True)
+    imgur_url = models.URLField(default="")
     instructions = models.TextField()
     owner = models.ForeignKey(User, related_name='owner')
 

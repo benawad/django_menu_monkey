@@ -6,9 +6,9 @@
     {% endif %}
       <div class="col-md-3">
             <div class="thumbnail">
-                {% if recipe.picture %}      
+                {% if recipe.imgur_url %}      
                     <a href="{% url 'show' recipe.id %}">
-                        <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }} thumbnail">
+                        <img src="{{ recipe.imgur_url }}" alt="{{ recipe.title }} thumbnail">
                     </a>
                 {% endif %}
                 <div class="caption">

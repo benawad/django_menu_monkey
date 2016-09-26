@@ -2,8 +2,8 @@
 
 {% block content %}
     <h1>{{ recipe.title }}</h1>
-    {% if recipe.picture %}
-        <img src="{{ recipe.picture.url }}" class="img-responsive" alt="{{ recipe.title }} picture">
+    {% if recipe.imgur_url %}
+        <img src="{{ recipe.imgur_url }}" class="img-responsive" alt="{{ recipe.title }} picture">
     {% endif %}
     <h4>Instructions</h2>
     <p>{{ recipe.instructions }}</p>

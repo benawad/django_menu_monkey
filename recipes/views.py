@@ -4,10 +4,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from .models import Recipe, Ingredient
 from .forms import RecipeForm
-import json
+
+from imgurpython import ImgurClient
+import os
 
 
 def index(request):
@@ -52,6 +55,9 @@ def createRecipe(request):
                         ing = Ingredient(name=i.strip())
                         ing.save()
                         ing.recipes.add(recipe)
+            url = settings.BASE_DIR + recipe.picture.url
+            recipe.imgur_url = (_upload_to_imgur(url)['link'])
+            recipe.save()
             return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'recipes/create.html', {'recipe_form': recipe_form})
@@ -72,3 +78,12 @@ def delete_view(request, recipe_id):
 def show_view(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     return render(request, 'recipes/show.html', {'recipe': recipe, 'ingredients': recipe.ingredient_set.all()})
+
+
+def _upload_to_imgur(path):
+    client_id = os.environ['IMGUR_CLIENT_ID']
+    client_secret = os.environ['IMGUR_CLIENT_SECRET']
+
+    client = ImgurClient(client_id, client_secret)
+    url = client.upload_from_path(path)
+    return url
